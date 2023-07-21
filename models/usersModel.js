@@ -11,8 +11,13 @@ const userSchema = new mongoose.Schema(
 			type: Date,
 			default: Date.now,
 		},
+		fullname: {
+			type: String,
+			required: [true, 'Must have a fullname'],
+		},
 		username: {
 			type: String,
+			unique: true,
 			required: [true, 'Must have a username'],
 		},
 		bio: {
@@ -42,16 +47,6 @@ const userSchema = new mongoose.Schema(
 			required: [true, 'please provide a password'],
 			minlength: 8,
 			select: false,
-		},
-		passwordConfirm: {
-			type: String,
-			required: [true, 'Please provide a passwordConfirm'],
-			validate: {
-				validator: function (el) {
-					return el === this.password;
-				},
-				message: 'Password are not same!',
-			},
 		},
 		status: {
 			type: String,
