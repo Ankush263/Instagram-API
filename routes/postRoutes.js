@@ -1,4 +1,5 @@
 const express = require('express');
+const { cleanCahe } = require('../utils/cache');
 
 const {
 	createPost,
@@ -10,7 +11,7 @@ const {
 
 const router = express.Router();
 
-router.route('/').get(getAllPost).post(createPost);
+router.route('/').get(getAllPost).post(cleanCahe, createPost);
 
 router.route('/:id').get(getOnePost).patch(updatePost).delete(deletePost);
 

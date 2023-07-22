@@ -1,6 +1,8 @@
 const express = require('express');
 const userRouter = require('./routes/userRoutes');
 const postRouter = require('./routes/postRoutes');
+const morgan = require('morgan');
+const AppError = require('./utils/appError');
 
 const app = express();
 
