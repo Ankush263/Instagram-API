@@ -4,7 +4,7 @@ const APIFeatures = require('../utils/apiFeatures');
 const { postKey, allPostKey, userKey, allUserKey } = require('../utils/keys');
 const client = require('../redis/client');
 
-exports.deleteOne = (Model) =>
+exports.deleteOne = (Model, keyType) =>
 	catchAsync(async (req, res, next) => {
 		let key, field;
 		if (keyType === 'post') {

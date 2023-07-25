@@ -14,7 +14,7 @@ const postSchema = new mongoose.Schema(
 			type: String,
 			required: [true, 'Must provide a post url'],
 		},
-		user_id: {
+		user: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'User',
 		},
@@ -38,6 +38,15 @@ const postSchema = new mongoose.Schema(
 		toObject: { virtuals: true },
 	}
 );
+
+postSchema.pre(/^find/, function (next) {
+	this.populate({
+		path: 'user',
+		select: 'avater username',
+	});
+
+	next();
+});
 
 const Post = mongoose.model('Post', postSchema);
 

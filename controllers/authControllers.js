@@ -115,13 +115,13 @@ exports.isLoggedIn = async (req, res, next) => {
 	next();
 };
 
-exports.restrictTo = (...types) => {
-	return (req, res, next) => {
-		if (!types.includes(req.user.status)) {
-			return next(
-				new AppError(`You don't have permission to perform this action`, 403)
-			);
-		}
-		next();
-	};
-};
+// exports.restrictTo = (...types) => {
+// 	return (req, res, next) => {
+// 		if (!types.includes(req.user.status)) {
+// 			return next(
+// 				new AppError(`You don't have permission to perform this action`, 403)
+// 			);
+// 		}
+// 		next();
+// 	};
+// };
