@@ -32,9 +32,13 @@ const userSchema = new mongoose.Schema(
 			type: Number,
 			default: 0,
 		},
-		posts: {
-			type: mongoose.Schema.ObjectId,
-			ref: 'Post',
+		followersNum: {
+			type: Number,
+			default: 0,
+		},
+		followingNum: {
+			type: Number,
+			default: 0,
 		},
 		phone: {
 			type: String,
@@ -111,6 +115,32 @@ userSchema.methods.createPasswordResetToken = function () {
 
 	return resetToken;
 };
+
+userSchema.virtual('posts', {
+	ref: 'Post',
+	foreignField: 'user',
+	localField: '_id',
+});
+
+userSchema.virtual('followers', {
+	ref: 'Follow',
+	foreignField: 'to',
+	localField: '_id',
+	justOne: false,
+	options: {
+		populate: { path: 'self', select: 'username avater' },
+	},
+});
+
+userSchema.virtual('followings', {
+	ref: 'Follow',
+	foreignField: 'self',
+	localField: '_id',
+	justOne: false,
+	options: {
+		populate: { path: 'to', select: 'username avater' },
+	},
+});
 
 const User = mongoose.model('User', userSchema);
 

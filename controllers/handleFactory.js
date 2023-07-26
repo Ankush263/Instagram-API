@@ -67,41 +67,59 @@ exports.createOne = (Model) =>
 		});
 	});
 
-exports.getOne = (Model, keyType, popOptions) =>
+// exports.getOne = (Model, keyType, popOptions) =>
+// 	catchAsync(async (req, res, next) => {
+// 		let key, field, doc;
+
+// 		if (keyType === 'post') {
+// 			key = allPostKey();
+// 			field = postKey(req.params.id);
+// 		}
+// 		if (keyType === 'user') {
+// 			key = allUserKey();
+// 			field = userKey(req.params.id);
+// 		}
+// 		const cacheValue = await client.HGET(key, field);
+
+// 		if (!cacheValue) {
+// 			console.log('MEMORY IS EMPTY 🫗🫗🫗');
+// 			let query = Model.findById(req.params.id);
+// 			if (popOptions) query = query.populate(popOptions);
+// 			doc = await query;
+
+// 			client.HSET(key, field, JSON.stringify(doc));
+
+// 			if (!doc) {
+// 				return next(new AppError('No document found with that Id', 404));
+// 			}
+// 			res.status(200).json({
+// 				status: 'success',
+// 				data: {
+// 					data: doc,
+// 				},
+// 			});
+// 			return;
+// 		}
+// 		console.log('MEMORY HAS ITEMS 🌝🌝');
+// 		doc = JSON.parse(cacheValue);
+
+// 		res.status(200).json({
+// 			status: 'success',
+// 			data: {
+// 				data: doc,
+// 			},
+// 		});
+// 	});
+
+exports.getOne = (Model, popOptions) =>
 	catchAsync(async (req, res, next) => {
-		let key, field, doc;
+		let query = Model.findById(req.params.id);
+		if (popOptions) query = query.populate(popOptions);
+		const doc = await query;
 
-		if (keyType === 'post') {
-			key = allPostKey();
-			field = postKey(req.params.id);
+		if (!doc) {
+			return next(new AppError('No document found with that ID', 404));
 		}
-		if (keyType === 'user') {
-			key = allUserKey();
-			field = userKey(req.params.id);
-		}
-		const cacheValue = await client.HGET(key, field);
-
-		if (!cacheValue) {
-			console.log('MEMORY IS EMPTY 🫗🫗🫗');
-			let query = Model.findById(req.params.id);
-			if (popOptions) query = query.populate(popOptions);
-			doc = await query;
-
-			client.HSET(key, field, JSON.stringify(doc));
-
-			if (!doc) {
-				return next(new AppError('No document found with that Id', 404));
-			}
-			res.status(200).json({
-				status: 'success',
-				data: {
-					data: doc,
-				},
-			});
-			return;
-		}
-		console.log('MEMORY HAS ITEMS 🌝🌝');
-		doc = JSON.parse(cacheValue);
 
 		res.status(200).json({
 			status: 'success',

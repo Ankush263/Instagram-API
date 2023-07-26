@@ -2,6 +2,7 @@ const User = require('../models/usersModel');
 const factory = require('./handleFactory');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const Post = require('../models/postModel');
 
 exports.createUser = (req, res) => {
 	res.status(500).json({
@@ -52,6 +53,12 @@ exports.getMe = (req, res, next) => {
 };
 
 exports.deleteMe = catchAsync(async (req, res, next) => {
+	const postsToDelete = await Post.find({ user: req.user.id });
+	await Promise.all(
+		postsToDelete.map(async (post) => {
+			await post.remove();
+		})
+	);
 	await User.findByIdAndDelete(req.user.id);
 
 	res.status(204).json({
@@ -61,4 +68,7 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllUser = factory.getAll(User);
-exports.getOneUser = factory.getOne(User, 'user');
+// exports.getOneUser = factory.getOne(User, 'user', { path: 'posts' });
+exports.getOneUser = factory.getOne(User, {
+	path: 'posts followers followings',
+});

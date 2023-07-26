@@ -6,7 +6,6 @@ const User = require('../models/usersModel');
 
 exports.setUser = catchAsync(async (req, res, next) => {
 	const userProfile = await User.findById(req.user.id);
-	console.log(userProfile);
 	if (!userProfile) {
 		return next(new AppError(`Please create an account`, 404));
 	}

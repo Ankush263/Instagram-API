@@ -1,10 +1,12 @@
 const express = require('express');
-const userRouter = require('./routes/userRoutes');
-const postRouter = require('./routes/postRoutes');
 const morgan = require('morgan');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorControllers');
 const cookieParser = require('cookie-parser');
+
+const userRouter = require('./routes/userRoutes');
+const postRouter = require('./routes/postRoutes');
+const followRouter = require('./routes/followRoutes');
 
 const app = express();
 
@@ -19,6 +21,7 @@ app.use(express.json({ limit: '10kb' }));
 
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/post', postRouter);
+app.use('/api/v1/follow', followRouter);
 
 app.all('*', (req, res, next) => {
 	next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
