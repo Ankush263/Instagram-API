@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const userRouter = require('./routes/userRoutes');
 const postRouter = require('./routes/postRoutes');
 const followRouter = require('./routes/followRoutes');
+const postTagRouter = require('./routes/postTagRoutes');
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(express.json({ limit: '10kb' }));
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/post', postRouter);
 app.use('/api/v1/follow', followRouter);
+app.use('/api/v1/postTag', postTagRouter);
 
 app.all('*', (req, res, next) => {
 	next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

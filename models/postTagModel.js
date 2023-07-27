@@ -20,6 +20,14 @@ const postTagSchema = new mongoose.Schema(
 			ref: 'Post',
 			require: [true, 'Must belongs to a post'],
 		},
+		x: {
+			type: Number,
+			require: [true, 'Must have a distance in x axis'],
+		},
+		y: {
+			type: Number,
+			require: [true, 'Must have a distance in y axis'],
+		},
 	},
 	{
 		toJSON: { virtuals: true },
@@ -27,6 +35,6 @@ const postTagSchema = new mongoose.Schema(
 	}
 );
 
-const Post = mongoose.model('Post', postTagSchema);
+const PostTag = mongoose.model('PostTag', postTagSchema);
 
-module.exports = Post;
+module.exports = PostTag;

@@ -6,16 +6,16 @@ const client = require('../redis/client');
 
 exports.deleteOne = (Model, keyType) =>
 	catchAsync(async (req, res, next) => {
-		let key, field;
-		if (keyType === 'post') {
-			key = allPostKey();
-			field = postKey(req.params.id);
-		}
-		if (keyType === 'user') {
-			key = allUserKey();
-			field = userKey(req.params.id);
-		}
-		await client.HDEL(key, field);
+		// let key, field;
+		// if (keyType === 'post') {
+		// 	key = allPostKey();
+		// 	field = postKey(req.params.id);
+		// }
+		// if (keyType === 'user') {
+		// 	key = allUserKey();
+		// 	field = userKey(req.params.id);
+		// }
+		// await client.HDEL(key, field);
 		const doc = await Model.findByIdAndDelete(req.params.id);
 		if (!doc) {
 			return next(new AppError('No document found with that Id', 404));

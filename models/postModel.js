@@ -86,6 +86,12 @@ postSchema.post(/^findOneAnd/, async function () {
 	await this.r.constructor.calcPostNumber(this.r.user);
 });
 
+postSchema.virtual('tags', {
+	ref: 'PostTag',
+	foreignField: 'post',
+	localField: '_id',
+});
+
 const Post = mongoose.model('Post', postSchema);
 
 module.exports = Post;

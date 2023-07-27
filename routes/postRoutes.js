@@ -8,6 +8,7 @@ const {
 	updatePost,
 	deletePost,
 	setUser,
+	checkOwner,
 } = require('../controllers/postControllers');
 
 const { protect } = require('../controllers/authControllers');
@@ -18,6 +19,10 @@ router.use(protect);
 
 router.route('/').get(getAllPost).post(setUser, createPost);
 
-router.route('/:id').get(getOnePost).patch(updatePost).delete(deletePost);
+router
+	.route('/:id')
+	.get(checkOwner, getOnePost)
+	.patch(updatePost)
+	.delete(deletePost);
 
 module.exports = router;
