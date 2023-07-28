@@ -10,12 +10,12 @@ const followSchema = new mongoose.Schema(
 		self: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'User',
-			require: [true, 'Must have a self user account'],
+			required: [true, 'Must have a self user account'],
 		},
 		to: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'User',
-			require: [true, 'Must have a to user account'],
+			required: [true, 'Must have a to user account'],
 		},
 	},
 	{

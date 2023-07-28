@@ -8,6 +8,8 @@ const userRouter = require('./routes/userRoutes');
 const postRouter = require('./routes/postRoutes');
 const followRouter = require('./routes/followRoutes');
 const postTagRouter = require('./routes/postTagRoutes');
+const commentRouter = require('./routes/commentRoutes');
+const likesRouter = require('./routes/likeRoutes');
 
 const app = express();
 
@@ -24,6 +26,8 @@ app.use('/api/v1/user', userRouter);
 app.use('/api/v1/post', postRouter);
 app.use('/api/v1/follow', followRouter);
 app.use('/api/v1/postTag', postTagRouter);
+app.use('/api/v1/comment', commentRouter);
+app.use('/api/v1/likes', likesRouter);
 
 app.all('*', (req, res, next) => {
 	next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

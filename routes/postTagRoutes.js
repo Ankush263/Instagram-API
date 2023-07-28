@@ -6,6 +6,8 @@ const {
 	setUser,
 	deletePostTag,
 	checkOwner,
+	checkPost,
+	getAllPostTagByPost,
 } = require('../controllers/postTagControllers');
 
 const { protect } = require('../controllers/authControllers');
@@ -14,7 +16,9 @@ const router = express.Router();
 
 router.use(protect);
 
-router.route('/').get(getAllPostTag).post(setUser, createPostTag);
+router.route('/tagsByPost/:postId').get(getAllPostTagByPost);
+
+router.route('/').get(getAllPostTag).post(setUser, checkPost, createPostTag);
 router.route('/:id').delete(checkOwner, deletePostTag);
 
 module.exports = router;

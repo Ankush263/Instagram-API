@@ -92,6 +92,18 @@ postSchema.virtual('tags', {
 	localField: '_id',
 });
 
+postSchema.virtual('comments', {
+	ref: 'Comment',
+	foreignField: 'post',
+	localField: '_id',
+});
+
+postSchema.virtual('likes', {
+	ref: 'Like',
+	foreignField: 'post',
+	localField: '_id',
+});
+
 const Post = mongoose.model('Post', postSchema);
 
 module.exports = Post;

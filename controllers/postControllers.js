@@ -21,8 +21,29 @@ exports.checkOwner = catchAsync(async (req, res, next) => {
 	next();
 });
 
+exports.getAllMyPosts = catchAsync(async (req, res, next) => {
+	const allMyPosts = await Post.find({ user: req.user.id });
+	res.status(200).json({
+		status: 'success',
+		data: {
+			data: allMyPosts,
+		},
+	});
+});
+
+exports.getPostsByUsers = catchAsync(async (req, res, next) => {
+	const posts = await Post.find({ user: req.params.userId });
+
+	res.status(201).json({
+		status: 'success',
+		data: {
+			data: posts,
+		},
+	});
+});
+
 exports.createPost = factory.createOne(Post);
 exports.getAllPost = factory.getAll(Post);
-exports.getOnePost = factory.getOne(Post, { path: 'tags' });
+exports.getOnePost = factory.getOne(Post, { path: 'tags comments likes' });
 exports.updatePost = factory.updateOne(Post, 'post');
 exports.deletePost = factory.deleteOne(Post, 'post');

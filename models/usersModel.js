@@ -142,6 +142,13 @@ userSchema.virtual('followings', {
 	},
 });
 
+userSchema.virtual('tagged', {
+	ref: 'PostTag',
+	foreignField: 'taggedPerson',
+	localField: '_id',
+	justOne: false,
+});
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;

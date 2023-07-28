@@ -13,20 +13,25 @@ const postTagSchema = new mongoose.Schema(
 		user: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'User',
-			require: [true, 'Must belongs to a user account'],
+			required: [true, 'Must belongs to a user account'],
 		},
 		post: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'Post',
-			require: [true, 'Must belongs to a post'],
+			required: [true, 'Must belongs to a post'],
+		},
+		taggedPerson: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'User',
+			required: [true, 'Must have a tagged person'],
 		},
 		x: {
 			type: Number,
-			require: [true, 'Must have a distance in x axis'],
+			required: [true, 'Must have a distance in x axis'],
 		},
 		y: {
 			type: Number,
-			require: [true, 'Must have a distance in y axis'],
+			required: [true, 'Must have a distance in y axis'],
 		},
 	},
 	{
