@@ -13,5 +13,16 @@ exports.setUser = catchAsync(async (req, res, next) => {
 	next();
 });
 
+exports.check = catchAsync(async (req, res, next) => {
+	const existingLike = await Like.findOne({
+		user: req.user.id,
+		post: req.body.post,
+	});
+	if (existingLike) {
+		return next(new AppError('You already liked this post', 404));
+	}
+	next();
+});
+
 exports.createLikes = factory.createOne(Like);
 exports.deleteLike = factory.deleteOne(Like);

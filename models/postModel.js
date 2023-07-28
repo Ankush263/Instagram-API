@@ -22,6 +22,10 @@ const postSchema = new mongoose.Schema(
 		caption: {
 			type: String,
 		},
+		likesNum: {
+			type: Number,
+			default: 0,
+		},
 		location: [
 			{
 				type: {
@@ -83,7 +87,7 @@ postSchema.pre(/^findOneAnd/, async function (next) {
 });
 
 postSchema.post(/^findOneAnd/, async function () {
-	await this.r.constructor.calcPostNumber(this.r.user);
+	await this.r?.constructor.calcPostNumber(this.r.user);
 });
 
 postSchema.virtual('tags', {

@@ -83,8 +83,8 @@ followSchema.pre(/^findOneAnd/, async function (next) {
 });
 
 followSchema.post(/^findOneAnd/, async function () {
-	await this.r.constructor.calcFollowing(this.r.self);
-	await this.r.constructor.calcFollowers(this.r.to);
+	await this.r?.constructor.calcFollowing(this.r.self);
+	await this.r?.constructor.calcFollowers(this.r.to);
 });
 
 const Follow = mongoose.model('Follow', followSchema);

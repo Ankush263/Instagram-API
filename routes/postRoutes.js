@@ -1,5 +1,5 @@
 const express = require('express');
-const { cleanCahe } = require('../utils/cache');
+const { cleanCahe } = require('../redis/utils/cache');
 
 const {
 	createPost,
@@ -22,7 +22,7 @@ router.use(protect);
 router.route('/myposts').get(getAllMyPosts);
 router.route('/postByUser/:userId').get(getPostsByUsers);
 
-router.route('/').get(getAllPost).post(setUser, createPost);
+router.route('/').get(getAllPost).post(setUser, cleanCahe, createPost);
 
 router
 	.route('/:id')
