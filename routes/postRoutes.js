@@ -1,5 +1,5 @@
 const express = require('express');
-const { cleanCahe } = require('../redis/utils/cache');
+const { cleanCacheUser, cleanCachePost } = require('../redis/utils/cache');
 
 const {
 	createPost,
@@ -22,12 +22,12 @@ router.use(protect);
 router.route('/myposts').get(getAllMyPosts);
 router.route('/postByUser/:userId').get(getPostsByUsers);
 
-router.route('/').get(getAllPost).post(setUser, cleanCahe, createPost);
+router.route('/').get(getAllPost).post(setUser, cleanCacheUser, createPost);
 
 router
 	.route('/:id')
 	.get(getOnePost)
-	.patch(checkOwner, updatePost)
-	.delete(checkOwner, deletePost);
+	.patch(checkOwner, cleanCacheUser, cleanCachePost, updatePost)
+	.delete(checkOwner, cleanCacheUser, cleanCachePost, deletePost);
 
 module.exports = router;

@@ -4,6 +4,8 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const User = require('../models/usersModel');
 const Post = require('../models/postModel');
+const client = require('../redis/client');
+const { postKey, allPostKey } = require('../redis/utils/keys');
 
 exports.setUser = catchAsync(async (req, res, next) => {
 	const userProfile = await User.findById(req.user.id);
@@ -16,7 +18,10 @@ exports.setUser = catchAsync(async (req, res, next) => {
 
 exports.checkOwner = catchAsync(async (req, res, next) => {
 	const post = await PostTag.findById(req.params.id);
-	if (post.user.id !== req.user.id) {
+	if (!post) {
+		return next(new AppError(`No document found with that Id`, 404));
+	}
+	if (JSON.stringify(post?.user?._id) !== JSON.stringify(req?.user?.id)) {
 		return next(new AppError(`You are not owner of this post`, 404));
 	}
 	next();
@@ -47,6 +52,19 @@ exports.getAllPostTagByPost = catchAsync(async (req, res, next) => {
 	});
 });
 
+exports.deletePostTag = catchAsync(async (req, res, next) => {
+	const tag = await PostTag.findById(req.params.id);
+	if (!tag) {
+		return next(new AppError('No document found with that Id', 404));
+	}
+
+	await client.HDEL(allPostKey(), postKey(tag.post));
+	const doc = await PostTag.findByIdAndDelete(req.params.id);
+	res.status(204).json({
+		status: 'success',
+		data: null,
+	});
+});
+
 exports.createPostTag = factory.createOne(PostTag);
 exports.getAllPostTag = factory.getAll(PostTag);
-exports.deletePostTag = factory.deleteOne(PostTag);

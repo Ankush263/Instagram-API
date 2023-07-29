@@ -11,6 +11,7 @@ const {
 } = require('../controllers/postTagControllers');
 
 const { protect } = require('../controllers/authControllers');
+const { cleanCachePost } = require('../redis/utils/cache');
 
 const router = express.Router();
 
@@ -18,7 +19,10 @@ router.use(protect);
 
 router.route('/tagsByPost/:postId').get(getAllPostTagByPost);
 
-router.route('/').get(getAllPostTag).post(setUser, checkPost, createPostTag);
-router.route('/:id').delete(checkOwner, deletePostTag);
+router
+	.route('/')
+	.get(getAllPostTag)
+	.post(setUser, checkPost, cleanCachePost, createPostTag);
+router.route('/:id').delete(checkOwner, cleanCachePost, deletePostTag);
 
 module.exports = router;

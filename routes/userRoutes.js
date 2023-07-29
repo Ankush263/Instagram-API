@@ -18,6 +18,8 @@ const {
 	protect,
 } = require('../controllers/authControllers');
 
+const { cleanCacheUser } = require('../redis/utils/cache');
+
 const router = express.Router();
 
 router.route('/signup').post(signup);
@@ -26,9 +28,9 @@ router.route('/logout').get(logout);
 
 router.use(protect);
 
-router.route('/updateMe').patch(updateMe);
+router.route('/updateMe').patch(cleanCacheUser, updateMe);
 router.route('/me').get(getMe, getOneUser);
-router.route('/deleteMe').delete(deleteMe);
+router.route('/deleteMe').delete(cleanCacheUser, deleteMe);
 
 router.route('/').get(getAllUser).post(createUser);
 router.route('/:id').get(getOneUser).patch(updateUser).delete(deleteUser);
