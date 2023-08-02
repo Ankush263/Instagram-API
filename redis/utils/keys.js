@@ -1,9 +1,7 @@
 // user
-exports.userKey = (userId) => `user#${userId}`;
-exports.allUserKey = () => `users`;
+exports.userKey = (userId) => `InstagramUser#${userId}`;
+exports.allUserKey = () => `InstagramUsers`;
 
 // post
-exports.postKey = (postId) => `post#${postId}`;
-exports.allPostKey = () => `posts`;
-
-// change users -> InstagramUsers
+exports.postKey = (postId) => `InstagramPost#${postId}`;
+exports.allPostKey = () => `InstagramPosts`;

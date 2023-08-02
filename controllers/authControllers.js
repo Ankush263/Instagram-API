@@ -92,7 +92,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 	next();
 });
 
-exports.isLoggedIn = async (req, res, next) => {
+exports.isLoggedIn = catchAsync(async (req, res, next) => {
 	try {
 		if (req.cookies.jwt) {
 			const decoded = await promisify(jwt.verify)(
@@ -100,28 +100,11 @@ exports.isLoggedIn = async (req, res, next) => {
 				process.env.JWT_SECRET
 			);
 			const freshUser = await User.findById(decoded.id);
-			if (!freshUser) {
-				return next();
-			}
-			if (freshUser.changedPasswordAfter(decoded.iat)) {
+			if (!freshUser || freshUser.changedPasswordAfter(decoded.iat)) {
 				return next();
 			}
 			res.locals.user = freshUser;
-			return next();
 		}
-	} catch (error) {
-		return next();
-	}
+	} catch (error) {}
 	next();
-};
-
-// exports.restrictTo = (...types) => {
-// 	return (req, res, next) => {
-// 		if (!types.includes(req.user.status)) {
-// 			return next(
-// 				new AppError(`You don't have permission to perform this action`, 403)
-// 			);
-// 		}
-// 		next();
-// 	};
-// };
+});
