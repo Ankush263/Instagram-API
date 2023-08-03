@@ -17,7 +17,10 @@ const commentSchema = new mongoose.Schema(
 		post: {
 			type: mongoose.Schema.ObjectId,
 			ref: 'Post',
-			required: [true, 'Comment must belongs to a post'],
+		},
+		reel: {
+			type: mongoose.Schema.ObjectId,
+			ref: 'Reel',
 		},
 		user: {
 			type: mongoose.Schema.ObjectId,

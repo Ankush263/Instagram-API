@@ -11,6 +11,7 @@ const postTagRouter = require('./routes/postTagRoutes');
 const commentRouter = require('./routes/commentRoutes');
 const likesRouter = require('./routes/likeRoutes');
 const storyRouter = require('./routes/storyRoutes');
+const reelRouter = require('./routes/reelRoutes');
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use('/api/v1/postTag', postTagRouter);
 app.use('/api/v1/comment', commentRouter);
 app.use('/api/v1/likes', likesRouter);
 app.use('/api/v1/story', storyRouter);
+app.use('/api/v1/reel', reelRouter);
 
 app.all('*', (req, res, next) => {
 	next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

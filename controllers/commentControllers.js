@@ -48,6 +48,21 @@ exports.deleteComment = catchAsync(async (req, res, next) => {
 	});
 });
 
-exports.createComment = factory.createOne(Comment);
+exports.createComment = catchAsync(async (req, res, next) => {
+	const doc = await Comment.create(req.body);
+
+	if (req.body.post) {
+		await client.HDEL(allPostKey(), postKey(req.body.post));
+		console.log('post key deleted...');
+	}
+
+	res.status(201).json({
+		status: 'success',
+		data: {
+			data: doc,
+		},
+	});
+});
+
 exports.getAllComment = factory.getAll(Comment);
-exports.getOneComment = factory.getOne(Comment);
+exports.getOneComment = factory.getOneWithoutCache(Comment);

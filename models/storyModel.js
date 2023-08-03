@@ -15,6 +15,10 @@ const storySchema = new mongoose.Schema(
 			ref: 'User',
 			required: [true, 'Must belongs to a user'],
 		},
+		likesNum: {
+			type: Number,
+			default: 0,
+		},
 	},
 	{
 		toJSON: { virtuals: true },

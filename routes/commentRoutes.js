@@ -19,7 +19,8 @@ router.use(protect);
 router
 	.route('/')
 	.get(getAllComment)
-	.post(setUser, cleanCachePost, createComment);
+	// .post(setUser, cleanCachePost, createComment);
+	.post(setUser, createComment);
 
 router
 	.route('/:id')

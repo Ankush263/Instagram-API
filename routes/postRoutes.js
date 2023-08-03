@@ -11,6 +11,7 @@ const {
 	checkOwner,
 	getAllMyPosts,
 	getPostsByUsers,
+	getAllpostAndReels,
 } = require('../controllers/postControllers');
 
 const { protect } = require('../controllers/authControllers');
@@ -19,6 +20,7 @@ const router = express.Router();
 
 router.use(protect);
 
+router.route('/postAndReels').get(getAllpostAndReels);
 router.route('/myposts').get(getAllMyPosts);
 router.route('/postByUser/:userId').get(getPostsByUsers);
 

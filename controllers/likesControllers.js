@@ -32,7 +32,10 @@ exports.deleteLike = catchAsync(async (req, res, next) => {
 		return next(new AppError('No document found with that Id', 404));
 	}
 
-	await client.HDEL(allPostKey(), postKey(like.post));
+	if (like.post) {
+		await client.HDEL(allPostKey(), postKey(like.post));
+	}
+
 	const doc = await Like.findByIdAndDelete(req.params.id);
 	res.status(204).json({
 		status: 'success',
